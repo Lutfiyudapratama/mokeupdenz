@@ -2,13 +2,19 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Star, ShoppingCart } from "lucide-react"
+import { Star, ShoppingCart, Zap } from "lucide-react"
 import { Product } from "@/types"
 import { formatPrice } from "@/lib/utils/format"
 import { ProductQuickAddModal } from "./product-quick-add-modal"
 
 export function ProductCard({ product }: { product: Product }) {
   const [modalOpen, setModalOpen] = useState(false)
+  const [modalMode, setModalMode] = useState<"cart" | "buy">("cart")
+
+  function openModal(mode: "cart" | "buy") {
+    setModalMode(mode)
+    setModalOpen(true)
+  }
 
   return (
     <>
@@ -49,19 +55,30 @@ export function ProductCard({ product }: { product: Product }) {
             {formatPrice(product.price)}
           </p>
 
-          <button
-            onClick={() => setModalOpen(true)}
-            className="w-full flex items-center justify-center gap-1.5 bg-primary-dark hover:bg-primary text-white text-[11px] sm:text-xs font-bold py-2.5 rounded-lg transition-colors uppercase tracking-wide"
-          >
-            <ShoppingCart className="h-3.5 w-3.5" />
-            Tambah Keranjang
-          </button>
+          {/* Dua tombol aksi, responsive: stack di mobile sempit, sejajar di lebih lebar */}
+          <div className="flex flex-col xs:flex-row gap-1.5 sm:gap-2 pt-0.5">
+            <button
+              type="button"
+              onClick={() => openModal("cart")}
+  className="flex-1 flex items-center justify-center gap-1 sm:gap-1.5 border-2 border-primary-dark text-primary-dark hover:bg-primary-light text-[10px] sm:text-xs font-bold py-2 sm:py-2.5 rounded-lg transition-colors uppercase tracking-wide">
+              <ShoppingCart className="h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0" />
+              <span className="truncate">Keranjang</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => openModal("buy")}
+  className="flex-1 flex items-center justify-center gap-1 sm:gap-1.5 border-2 border-primary-dark text-primary-dark hover:bg-primary-light text-[10px] sm:text-xs font-bold py-2 sm:py-2.5 rounded-lg transition-colors uppercase tracking-wide">
+              <Zap className="h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0" />
+              <span className="truncate">Beli Sekarang</span>
+            </button>
+          </div>
         </div>
       </div>
 
       <ProductQuickAddModal
         product={product}
         open={modalOpen}
+        mode={modalMode}
         onOpenChange={setModalOpen}
       />
     </>
