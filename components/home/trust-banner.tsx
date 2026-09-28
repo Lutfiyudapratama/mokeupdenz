@@ -10,7 +10,7 @@ export function TrustBanner() {
           <div className="flex items-center gap-2 rounded-xl bg-white/95 text-primary-dark px-4 py-1.5 mb-6">
             <ShieldCheck className="h-4 w-4" />
             <span className="text-[11px] sm:text-xs font-bold tracking-wide">
-              LOREM IPSUM DOLOR
+             LOGO
             </span>
           </div>
 

@@ -1,3 +1,4 @@
+import  Link  from "next/link"
 import { MarketplaceBadges } from "./marketplace-badges"
 
 export function HeroSection() {
@@ -8,36 +9,28 @@ export function HeroSection() {
       <div className="absolute bottom-8 left-8 h-16 w-16 rounded-xl bg-primary-dark/5 -rotate-12 hidden sm:block" />
 
       <div className="relative mx-auto max-w-4xl px-4 sm:px-6 py-12 sm:py-20 text-center">
-        <div className="flex justify-center mb-6">
-          <div className="flex flex-col items-center">
-            <span className="font-heading text-2xl sm:text-4xl font-extrabold tracking-tight text-primary-dark">
-              LOREM IPSUM
-            </span>
-            <div className="flex items-center gap-2 mt-1.5">
-              <span className="h-px w-5 bg-secondary" />
-              <span className="text-[10px] sm:text-xs tracking-[0.3em] font-semibold text-secondary">
-                DOLOR SIT AMET
-              </span>
-              <span className="h-px w-5 bg-secondary" />
-            </div>
-          </div>
+        <div className="flex justify-center mb-[var(--hero-logo-gap)]">
+          <Link href="/" className="inline-flex items-center">
+            <img
+              src="https://denzautodetailing.com/wp-content/uploads/2026/05/Main-Logo-Denz-Autodetailing-2026.png"
+              alt="Denz Auto Detailing"
+              className="h-10 sm:h-20 w-auto object-contain"
+            />
+          </Link>
         </div>
 
-        <h1 className="font-heading text-2xl sm:text-4xl md:text-5xl font-extrabold text-primary-dark leading-[1.15] mb-4">
-          Lorem Ipsum Dolor Sit Amet
-          <br />
-          <span className="text-secondary">Consectetur Adipiscing Elit</span>
-        </h1>
+        {/* Judul */}
+        <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-black text-primary-dark uppercase tracking-tight leading-[var(--hero-title-leading)] mb-[var(--hero-title-gap)]">
+          PERAWATAN KENDARAAN SIMPLE, HASIL MAKSIMAL!!!
+        </h2>
 
-        <p className="text-xs sm:text-sm md:text-base text-gray-500 max-w-2xl mx-auto leading-relaxed mb-7 sm:mb-8">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-          ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
+        {/* Deskripsi */}
+        <p className="font-display text-xs sm:text-sm md:text-base font-semibold text-gray-600 max-w-2xl mx-auto leading-[var(--hero-text-leading)] mb-[var(--hero-text-gap)]">
+          Denz Auto Detailing hadir buat kamu yang pengen kendaraan selalu bersih, glossy, dan enak dilihat setiap hari. Mulai dari cuci, proteksi, sampai finishing. Semua bisa kamu lakuin sendiri dengan hasil yang tetap keliatan profesional. Dipakai harian oke, dipakai detailing juga masuk. Cocok buat kamu yang peduli tampilan kendaraan tanpa harus ribet.
         </p>
 
         <p className="text-xs sm:text-sm font-bold text-primary mb-6 tracking-wide">
-          LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISCING ELIT
+          CEK KOLEKSI LENGKAPNYA SEKARANG DAN RASAIN SENDIRI HASILNYA
         </p>
 
         <MarketplaceBadges />

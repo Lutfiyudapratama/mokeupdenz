@@ -1,10 +1,10 @@
 import { ShoppingBag } from "lucide-react"
 
 const marketplaces = [
-  { name: "Lorem" },
-  { name: "Ipsum" },
-  { name: "Dolor" },
-  { name: "Sit Amet" },
+  { name: "Lazada" },
+  { name: "Shopee" },
+  { name: "Tokopedia" },
+  { name: "Tiktokshop" },
 ]
 
 export function MarketplaceBadges() {

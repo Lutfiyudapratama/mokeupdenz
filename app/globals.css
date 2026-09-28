@@ -20,8 +20,32 @@
   --color-secondary-light: #E0F2FE;
 
 
-  --font-heading: var(--font-manrope);
+  --font-heading: var(--font-poppins);
   --font-sans: var(--font-manrope);
+  --font-display: var(--font-poppins);
+}
+
+:root {
+  --hero-logo-gap: 1rem;
+  /* logo ke judul */
+  --hero-title-leading: 1;
+  /* jarak antar baris judul */
+  --hero-title-gap: 1.25rem;
+  /* judul ke deskripsi */
+  --hero-text-leading: 1.7;
+  /* jarak antar baris deskripsi */
+  --hero-text-gap: 1.75rem;
+  /* deskripsi ke teks CTA */
+}
+
+@media (min-width: 640px) {
+  :root {
+    --hero-logo-gap: 1.5rem;
+    --hero-title-leading: 0.95;
+    --hero-title-gap: 1.75rem;
+    --hero-text-leading: 1.75;
+    --hero-text-gap: 2rem;
+  }
 }
 
 html {

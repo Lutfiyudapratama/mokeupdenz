@@ -5,8 +5,10 @@ import { Minus, Plus, ShoppingCart, Zap, Check, X } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Product } from "@/types"
 import { formatPrice } from "@/lib/utils/format"
+import { getFinalPrice } from "@/lib/utils/product"
 import { useCartStore } from "@/store/cart-store"
 import { cn } from "@/lib/utils"
+import { PriceDisplay, DiscountBadge } from "./price-display"
 
 interface ProductQuickAddModalProps {
   product: Product | null
@@ -29,7 +31,6 @@ export function ProductQuickAddModal({
   const addItem = useCartStore((state) => state.addItem)
   const router = useRouter()
 
-  // Kontrol mount/unmount supaya animasi keluar sempat jalan sebelum dihapus dari DOM
   useEffect(() => {
     if (open) {
       setShouldRender(true)
@@ -54,18 +55,29 @@ export function ProductQuickAddModal({
 
   if (!shouldRender || !product) return null
 
-  const sizes = product.sizes ?? []
+  const variants = product.variants ?? []
   const maxQty = product.stock
-  const isDisabled = sizes.length > 0 && !selectedSize
+  const selectedVariant = variants.find((v) => v.size === selectedSize)
+
+  // Harga normal + diskon dari ukuran terpilih (atau dari produk kalau tanpa variants)
+  const base = selectedVariant
+    ? { price: selectedVariant.price, discount: selectedVariant.discount ?? 0 }
+    : variants.length === 0
+    ? { price: product.price, discount: product.discount ?? 0 }
+    : null
+
+  const unitPrice = base ? getFinalPrice(base.price, base.discount) : null
+  const savings = base && unitPrice !== null ? (base.price - unitPrice) * qty : 0
+  const isDisabled = unitPrice === null
 
   function handleConfirm() {
-    if (!product || isDisabled) return
+    if (!product || unitPrice === null) return
 
     addItem({
       productId: product.id,
       name: product.name,
       image: product.image,
-      price: product.price,
+      price: unitPrice,
       size: selectedSize ?? "Reguler",
       qty,
     })
@@ -129,34 +141,68 @@ export function ProductQuickAddModal({
             <p className="text-sm sm:text-base font-bold text-primary-dark leading-snug line-clamp-2">
               {product.name}
             </p>
-            <p className="font-heading text-base sm:text-lg font-extrabold text-primary mt-1">
-              {formatPrice(product.price)}
-            </p>
+            <div className="mt-1">
+              <PriceDisplay
+                product={product}
+                selectedSize={selectedSize}
+                className="font-heading text-base sm:text-lg font-extrabold text-primary leading-tight"
+              />
+            </div>
           </div>
         </div>
 
         <div className="p-4 sm:p-5 space-y-5 max-h-[50vh] overflow-y-auto">
-          {sizes.length > 0 && (
+          {variants.length > 0 && (
             <div>
               <p className="text-xs sm:text-sm font-bold text-primary-dark mb-2.5">
                 Pilih Ukuran
               </p>
               <div className="flex flex-wrap gap-2">
-                {sizes.map((size) => (
-                  <button
-                    key={size}
-                    type="button"
-                    onClick={() => setSelectedSize(size)}
-                    className={cn(
-                      "px-3.5 py-2 rounded-lg border-2 text-xs sm:text-sm font-semibold transition-all active:scale-95",
-                      selectedSize === size
-                        ? "border-primary-dark bg-primary-dark text-white"
-                        : "border-primary-light bg-white text-primary-dark hover:border-secondary"
-                    )}
-                  >
-                    {size}
-                  </button>
-                ))}
+                {variants.map((v) => {
+                  const active = selectedSize === v.size
+                  const discount = v.discount ?? 0
+                  return (
+                    <button
+                      key={v.size}
+                      type="button"
+                      onClick={() => setSelectedSize(v.size)}
+                      className={cn(
+                        "relative flex flex-col items-start px-3.5 py-2 rounded-lg border-2 transition-all active:scale-95 text-left",
+                        active
+                          ? "border-primary-dark bg-primary-dark text-white"
+                          : "border-primary-light bg-white text-primary-dark hover:border-secondary"
+                      )}
+                    >
+                      <span className="text-xs sm:text-sm font-semibold">
+                        {v.size}
+                      </span>
+                      <span
+                        className={cn(
+                          "text-[11px] font-bold",
+                          active ? "text-white" : "text-primary"
+                        )}
+                      >
+                        {formatPrice(getFinalPrice(v.price, discount))}
+                      </span>
+                      {discount > 0 && (
+                        <span
+                          className={cn(
+                            "text-[10px] line-through",
+                            active ? "text-white/60" : "text-gray-400"
+                          )}
+                        >
+                          {formatPrice(v.price)}
+                        </span>
+                      )}
+                      {discount > 0 && (
+                        <DiscountBadge
+                          percent={discount}
+                          className="absolute -top-2 -right-2 shadow-sm"
+                        />
+                      )}
+                    </button>
+                  )
+                })}
               </div>
             </div>
           )}
@@ -174,7 +220,7 @@ export function ProductQuickAddModal({
               >
                 <Minus className="h-4 w-4" />
               </button>
-              <span className="w-10 text-center text-sm sm:text-base font-bold text-primary-dark transition-all">
+              <span className="w-10 text-center text-sm sm:text-base font-bold text-primary-dark">
                 {qty}
               </span>
               <button
@@ -191,13 +237,25 @@ export function ProductQuickAddModal({
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-3 border-t border-primary-light">
-            <span className="text-xs sm:text-sm text-gray-500 font-medium">
-              Subtotal
-            </span>
-            <span className="font-heading text-base sm:text-xl font-extrabold text-primary-dark">
-              {formatPrice(product.price * qty)}
-            </span>
+          <div className="pt-3 border-t border-primary-light space-y-1.5">
+            {savings > 0 && (
+              <div className="flex items-center justify-between">
+                <span className="text-xs sm:text-sm text-gray-500 font-medium">
+                  Kamu hemat
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-red-500">
+                  {formatPrice(savings)}
+                </span>
+              </div>
+            )}
+            <div className="flex items-center justify-between">
+              <span className="text-xs sm:text-sm text-gray-500 font-medium">
+                Subtotal
+              </span>
+              <span className="font-heading text-base sm:text-xl font-extrabold text-primary-dark">
+                {unitPrice !== null ? formatPrice(unitPrice * qty) : "-"}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -217,7 +275,7 @@ export function ProductQuickAddModal({
           >
             {added ? (
               <>
-                <Check className="h-4 w-4 sm:h-5 sm:w-5 animate-in zoom-in duration-200" />
+                <Check className="h-4 w-4 sm:h-5 sm:w-5" />
                 Berhasil Ditambahkan
               </>
             ) : mode === "buy" ? (
