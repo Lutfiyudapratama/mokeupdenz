@@ -15,8 +15,8 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "Lorem Ipsum",
-  description: "Lorem ipsum dolor sit amet",
+  title: "DENZAUTODETAILING",
+  description: "Produk perawatan kendaraan 100% original made in Bandung.",
 }
 
 export const viewport: Viewport = {
