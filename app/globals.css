@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #EEF2FB;
+  --color-brand-100: #D6E0F5;
+  --color-brand-500: #27489D;
+  --color-brand-600: #213D87;
+  --color-brand-700: #1B3270;
+  --color-brand-900: #14264F;
+
+  --color-sky-100: #E0F2FE;
+  --color-sky-300: #7DD3FC;
+  --color-sky-500: #38BDF8;
+  --color-sky-600: #0EA5E9;
+  --color-primary: #27489D;
+  --color-primary-dark: #14264F;
+  --color-primary-light: #EEF2FB;
+
+  --color-secondary: #38BDF8;
+  --color-secondary-light: #E0F2FE;
+
+
+  --font-heading: var(--font-poppins);
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-poppins);
+}
+
+:root {
+  --hero-logo-gap: 1rem;
+  /* logo ke judul */
+  --hero-title-leading: 1;
+  /* jarak antar baris judul */
+  --hero-title-gap: 1.25rem;
+  /* judul ke deskripsi */
+  --hero-text-leading: 1.7;
+  /* jarak antar baris deskripsi */
+  --hero-text-gap: 1.75rem;
+  /* deskripsi ke teks CTA */
+}
+
+@media (min-width: 640px) {
+  :root {
+    --hero-logo-gap: 1.5rem;
+    --hero-title-leading: 0.95;
+    --hero-title-gap: 1.75rem;
+    --hero-text-leading: 1.75;
+    --hero-text-gap: 2rem;
+  }
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  background-color: #FFFFFF;
+}
+
+
+@keyframes overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlay-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modal-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modal-slide-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes modal-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modal-scale-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
+}
+
+.animate-overlay-in {
+  animation: overlay-fade-in 0.25s ease-out forwards;
+}
+
+.animate-overlay-out {
+  animation: overlay-fade-out 0.2s ease-in forwards;
+}
+
+.animate-modal-in {
+  animation: modal-slide-up 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+.animate-modal-out {
+  animation: modal-slide-down 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+@media (min-width: 640px) {
+  .animate-modal-in {
+    animation: modal-scale-in 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+
+  .animate-modal-out {
+    animation: modal-scale-out 0.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+}
