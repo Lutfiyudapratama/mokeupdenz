@@ -76,7 +76,7 @@ export function Navbar() {
               <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6 text-primary-dark" />
 
               <span className="absolute -top-1 -right-1 bg-secondary text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
-                2
+                0
               </span>
             </button>
 
