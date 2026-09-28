@@ -1,4 +1,4 @@
-import  Link  from "next/link"
+import Link from "next/link"
 import { MarketplaceBadges } from "./marketplace-badges"
 
 export function HeroSection() {
@@ -14,7 +14,7 @@ export function HeroSection() {
             <img
               src="https://denzautodetailing.com/wp-content/uploads/2026/05/Main-Logo-Denz-Autodetailing-2026.png"
               alt="Denz Auto Detailing"
-              className="h-10 sm:h-20 w-auto object-contain"
+              className="h-14 sm:h-20 w-auto object-contain"
             />
           </Link>
         </div>

@@ -1,10 +1,10 @@
 import { Category } from "@/types"
 
 export const categories: Category[] = [
-  { slug: "lorem", name: "Lorem", icon: "Package" },
-  { slug: "ipsum", name: "Ipsum", icon: "Box" },
-  { slug: "dolor", name: "Dolor", icon: "Layers" },
-  { slug: "sit-amet", name: "Sit Amet", icon: "Sparkles" },
-  { slug: "veniam", name: "Veniam", icon: "Wrench" },
-  { slug: "laboris", name: "Laboris", icon: "Settings" },
+  { slug: "lorem", name: "Produk bundling hemat", icon: "Sparkles" },
+  { slug: "ipsum", name: "Pembersih Mesin", icon: "Sparkles" },
+  { slug: "dolor", name: "Cuci dan perawatan kendaraan", icon: "Sparkles" },
+  { slug: "sit-amet", name: "Perawatan Ban & Kendaraan", icon: "Sparkles" },
+  { slug: "veniam", name: "Interior dan Serbaguna", icon: "Sparkles" },
+  { slug: "laboris", name: "Perawatan kaca & chrome", icon: "Sparkles" },
 ]
