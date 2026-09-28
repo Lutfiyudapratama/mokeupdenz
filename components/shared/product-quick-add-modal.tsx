@@ -70,6 +70,10 @@ export function ProductQuickAddModal({
   const savings = base && unitPrice !== null ? (base.price - unitPrice) * qty : 0
   const isDisabled = unitPrice === null
 
+  // True kalau produk punya diskon di salah satu ukuran (untuk menyisakan ruang tetap)
+  const hasAnyDiscount =
+    (product.discount ?? 0) > 0 || variants.some((v) => (v.discount ?? 0) > 0)
+
   function handleConfirm() {
     if (!product || unitPrice === null) return
 
@@ -126,6 +130,7 @@ export function ProductQuickAddModal({
           <X className="h-4 w-4" />
         </button>
 
+        {/* Header: gambar + nama + harga */}
         <div className="flex gap-3 p-4 sm:p-5 border-b border-primary-light">
           <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-lg overflow-hidden bg-primary-light shrink-0">
             <img
@@ -141,7 +146,8 @@ export function ProductQuickAddModal({
             <p className="text-sm sm:text-base font-bold text-primary-dark leading-snug line-clamp-2">
               {product.name}
             </p>
-            <div className="mt-1">
+            {/* min-h: tinggi tetap, tidak berubah saat harga coret muncul */}
+            <div className="mt-1 min-h-[3rem]">
               <PriceDisplay
                 product={product}
                 selectedSize={selectedSize}
@@ -237,9 +243,15 @@ export function ProductQuickAddModal({
             </div>
           </div>
 
+          {/* Ringkasan */}
           <div className="pt-3 border-t border-primary-light space-y-1.5">
-            {savings > 0 && (
-              <div className="flex items-center justify-between">
+            {hasAnyDiscount && (
+              <div
+                className={cn(
+                  "flex items-center justify-between",
+                  savings <= 0 && "invisible"
+                )}
+              >
                 <span className="text-xs sm:text-sm text-gray-500 font-medium">
                   Kamu hemat
                 </span>
@@ -290,11 +302,17 @@ export function ProductQuickAddModal({
               </>
             )}
           </button>
-          {isDisabled && (
-            <p className="text-center text-[11px] sm:text-xs text-red-500 mt-2">
-              Pilih ukuran terlebih dahulu
-            </p>
-          )}
+
+          {/* Selalu memakan tempat, hanya disembunyikan (invisible) setelah ukuran dipilih */}
+          <p
+            className={cn(
+              "text-center text-[11px] sm:text-xs text-red-500 mt-2",
+              !isDisabled && "invisible"
+            )}
+            aria-live="polite"
+          >
+            Pilih ukuran terlebih dahulu
+          </p>
         </div>
       </div>
     </div>
