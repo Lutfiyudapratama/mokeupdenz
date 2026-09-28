@@ -3,54 +3,97 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Star, ShoppingCart, Zap } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 import { Product } from "@/types"
 import { getPriceInfo } from "@/lib/utils/product"
 import { PriceDisplay, DiscountBadge } from "./price-display"
 import { ProductQuickAddModal } from "./product-quick-add-modal"
+
 import { LoginRequiredModal } from "@/components/auth/login-required-modal"
 import { useAuthStore } from "@/store/auth-store"
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+}: {
+  product: Product
+}) {
+  const router = useRouter()
+
+  // Modal produk
   const [modalOpen, setModalOpen] = useState(false)
+
+  // Mode:
+  // cart = Tambah ke keranjang
+  // buy = Beli sekarang
   const [modalMode, setModalMode] = useState<"cart" | "buy">("cart")
 
+  // Modal login
   const [loginModalOpen, setLoginModalOpen] = useState(false)
 
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
+  // Menyimpan action sebelum login
+  const [pendingMode, setPendingMode] = useState<
+    "cart" | "buy" | null
+  >(null)
+
+  const isLoggedIn = useAuthStore(
+    (state) => state.isLoggedIn
+  )
 
   const { maxDiscount } = getPriceInfo(product)
 
+  /**
+   * Klik Keranjang / Beli Sekarang
+   */
   function openModal(mode: "cart" | "buy") {
-    // Kalau belum login → tampilkan modal login
+    // Belum login
     if (!isLoggedIn) {
+      // Simpan action yang ingin dilakukan
+      setPendingMode(mode)
+
+      // Buka modal login
       setLoginModalOpen(true)
+
       return
     }
 
-    // Kalau sudah login → tampilkan modal produk
+    // Sudah login → langsung buka modal produk
     setModalMode(mode)
     setModalOpen(true)
+  }
+
+  /**
+   * Dipanggil setelah user berhasil login
+   */
+  function handleLoginSuccess() {
+    setLoginModalOpen(false)
+
+    // Ambil action sebelumnya
+    if (pendingMode) {
+      setModalMode(pendingMode)
+      setModalOpen(true)
+      setPendingMode(null)
+    }
   }
 
   return (
     <>
       <div className="group block overflow-hidden rounded-xl border-2 border-primary-light bg-white transition-all duration-200 hover:border-primary-dark hover:shadow-xl">
-
-        {/* Product Image */}
+        {/* PRODUCT IMAGE */}
         <Link href={`/products/${product.id}`}>
           <div className="relative aspect-square w-full overflow-hidden bg-primary-light">
-
             <img
               src={product.image}
               alt={product.name}
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
 
+            {/* Category */}
             <span className="absolute left-2 top-2 rounded-md bg-primary-dark px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-white sm:text-[10px]">
               {product.categoryLabel}
             </span>
 
+            {/* Discount */}
             <DiscountBadge
               percent={maxDiscount}
               prefix="Hemat hingga"
@@ -59,19 +102,17 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         </Link>
 
-        {/* Product Info */}
+        {/* PRODUCT INFO */}
         <div className="space-y-2 p-3 sm:p-4">
-
-          {/* Product Name */}
+          {/* Product name */}
           <Link href={`/products/${product.id}`}>
-            <p className="min-h-[2.4em] text-xs font-bold leading-snug text-primary-dark transition-colors hover:text-primary sm:text-sm">
+            <p className="min-h-[2.4em] line-clamp-2 text-xs font-bold leading-snug text-primary-dark transition-colors hover:text-primary sm:text-sm">
               {product.name}
             </p>
           </Link>
 
           {/* Rating */}
           <div className="flex items-center gap-1.5">
-
             <div className="flex items-center gap-0.5 rounded-md bg-secondary-light px-1.5 py-0.5">
               <Star className="h-3 w-3 fill-secondary text-secondary" />
 
@@ -91,10 +132,9 @@ export function ProductCard({ product }: { product: Product }) {
             className="pt-0.5 font-heading text-sm font-extrabold leading-tight text-primary sm:text-lg"
           />
 
-          {/* Buttons */}
+          {/* BUTTONS */}
           <div className="flex flex-col gap-1.5 pt-0.5 xs:flex-row sm:gap-2">
-
-            {/* Tambah Keranjang */}
+            {/* KERANJANG */}
             <button
               type="button"
               onClick={() => openModal("cart")}
@@ -107,7 +147,7 @@ export function ProductCard({ product }: { product: Product }) {
               </span>
             </button>
 
-            {/* Beli Sekarang */}
+            {/* BELI SEKARANG */}
             <button
               type="button"
               onClick={() => openModal("buy")}
@@ -119,12 +159,14 @@ export function ProductCard({ product }: { product: Product }) {
                 Beli Sekarang
               </span>
             </button>
-
           </div>
         </div>
       </div>
 
-      {/* Modal Pilihan Produk */}
+      {/* =====================================================
+          MODAL PILIH PRODUK
+          ===================================================== */}
+
       <ProductQuickAddModal
         product={product}
         open={modalOpen}
@@ -132,13 +174,34 @@ export function ProductCard({ product }: { product: Product }) {
         onOpenChange={setModalOpen}
       />
 
-      {/* Modal Login */}
+      {/* =====================================================
+          MODAL LOGIN
+          ===================================================== */}
+
       <LoginRequiredModal
         open={loginModalOpen}
-        onOpenChange={setLoginModalOpen}
+        onOpenChange={(open) => {
+          setLoginModalOpen(open)
+
+          // Jika user menutup modal login,
+          // batalkan action sebelumnya.
+          if (!open) {
+            setPendingMode(null)
+          }
+        }}
         onLogin={() => {
-          setLoginModalOpen(false)
-          window.location.href = "/login"
+          /*
+           * Pindah ke halaman login.
+           *
+           * State pendingMode tetap disimpan.
+           * Setelah login berhasil, halaman login
+           * perlu memanggil handleLoginSuccess().
+           */
+          router.push(
+            `/login?redirect=${encodeURIComponent(
+              `/products/${product.id}`
+            )}`
+          )
         }}
       />
     </>

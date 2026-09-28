@@ -79,26 +79,13 @@ export function LoginRequiredModal({
         <button
           type="button"
           onClick={handleClose}
-          className="
-            absolute right-3 top-3 z-10
-            flex h-8 w-8 items-center justify-center
-            rounded-full
-            bg-white/90
-            text-gray-500
-            shadow-sm
-            transition-all
-            hover:bg-white
-            hover:text-primary-dark
-            active:scale-90
-          "
+          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-gray-500 shadow-sm transition-all hover:bg-white hover:text-primary-dark active:scale-90"
           aria-label="Tutup"
         >
           <X className="h-4 w-4" />
         </button>
 
-        {/* Content */}
         <div className="p-6 text-center sm:p-7">
-
           {/* Icon */}
           <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-primary-light">
             <UserRound className="h-7 w-7 text-primary-dark" />
@@ -112,28 +99,16 @@ export function LoginRequiredModal({
           {/* Description */}
           <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-gray-500">
             Silakan masuk atau daftar akun terlebih dahulu
-            untuk mengakses keranjang dan pesanan kamu.
+            untuk melanjutkan pemesanan produk.
           </p>
 
-          {/* Login Button */}
+          {/* Login */}
           <button
             type="button"
             onClick={handleLogin}
-            className="
-              mt-6 flex w-full items-center justify-center
-              gap-2 rounded-lg
-              bg-primary-dark
-              py-3
-              text-sm font-bold
-              text-white
-              transition-all
-              hover:bg-primary
-              active:scale-[0.98]
-              sm:text-base
-            "
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-primary-dark py-3 text-sm font-bold text-white transition-all hover:bg-primary active:scale-[0.98] sm:text-base"
           >
             Masuk / Daftar
-
             <ArrowRight className="h-4 w-4" />
           </button>
 
@@ -141,14 +116,7 @@ export function LoginRequiredModal({
           <button
             type="button"
             onClick={handleClose}
-            className="
-              mt-3 w-full
-              py-2.5
-              text-sm font-semibold
-              text-gray-500
-              transition-colors
-              hover:text-primary-dark
-            "
+            className="mt-3 w-full py-2.5 text-sm font-semibold text-gray-500 transition-colors hover:text-primary-dark"
           >
             Nanti saja
           </button>
