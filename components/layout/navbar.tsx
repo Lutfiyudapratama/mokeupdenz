@@ -1,11 +1,12 @@
 "use client"
 
 import Link from "next/link"
-import { Search, ShoppingCart, User } from "lucide-react"
+import { ShoppingCart, User } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 import { LoginRequiredModal } from "@/components/auth/login-required-modal"
+import { RunningText } from "@/components/home/running-text"
 import { useAuthStore } from "@/store/auth-store"
 
 export function Navbar() {
@@ -26,65 +27,41 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-secondary-light">
-        <div className="mx-auto max-w-7xl px-3 sm:px-4 h-14 sm:h-16 grid grid-cols-[auto_1fr] sm:grid-cols-[auto_1fr_auto] items-center gap-3 sm:gap-6">
-
-          {/* KIRI: Logo Denz (Paling Kiri) */}
-          <Link
-            href="/"
-            aria-label="Denz Auto Detailing - Beranda"
-            className="inline-flex items-center shrink-0"
-          >
-            <img
-              src="https://denzautodetailing.com/wp-content/uploads/2026/05/Main-Logo-Denz-Autodetailing-2026.png"
-              alt="Denz Auto Detailing"
-              className="h-7 sm:h-9 w-auto object-contain"
-            />
-          </Link>
-
-          {/* TENGAH: Kotak Pencarian */}
-          <div className="hidden sm:flex items-center relative justify-self-center w-full max-w-2xl">
-            <input
-              type="text"
-              placeholder="search products..."
-              className="w-full rounded-xl border border-gray-200 px-4 py-2.5 pl-10 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-light transition-all"
-            />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary" />
-          </div>
-
-          {/* KANAN: Ikon-ikon */}
-          <div className="flex items-center gap-3 sm:gap-5 justify-self-end">
-            {/* Search mobile */}
-            <Link
-              href="/search"
-              className="sm:hidden p-1"
-            >
-              <Search className="h-5 w-5 text-primary-dark" />
-            </Link>
-
-            {/* Keranjang */}
-            <button
-              type="button"
-              onClick={handleCartClick}
-              aria-label="Keranjang"
-              className="relative p-1"
-            >
-              <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6 text-primary-dark" />
-              <span className="absolute -top-1 -right-1 bg-secondary text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
-                2
-              </span>
-            </button>
-
-            {/* Profile */}
-            <Link
-              href="/profile"
-              className="hidden sm:block p-1"
-            >
-              <User className="h-6 w-6 text-primary-dark" />
-            </Link>
-          </div>
-        </div>
+      {/* Navbar = running text full lebar layar */}
+      <header className="sticky top-0 z-40 w-full border-b border-secondary-blue bg-white">
+        <RunningText />
       </header>
+
+      {/*
+        Tombol bulat melayang (kanan bawah). Sengaja di luar <header>
+        agar `fixed` menempel ke layar.
+      */}
+      <div
+        className="fixed right-4 sm:right-6 z-50 flex flex-col gap-3"
+        style={{ bottom: "max(1rem, env(safe-area-inset-bottom))" }}
+      >
+        {/* Profile */}
+        <Link
+          href="/profile"
+          aria-label="Profil"
+          className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white text-primary-dark shadow-lg ring-1 ring-secondary-light transition-transform hover:scale-105 active:scale-95"
+        >
+          <User className="h-5 w-5 sm:h-6 sm:w-6" />
+        </Link>
+
+        {/* Keranjang */}
+        <button
+          type="button"
+          onClick={handleCartClick}
+          aria-label="Keranjang"
+          className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-primary-dark text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+        >
+          <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6" />
+          <span className="absolute -top-1 -right-1 bg-secondary text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center ring-2 ring-white">
+            2
+          </span>
+        </button>
+      </div>
 
       {/* Modal Login */}
       <LoginRequiredModal
