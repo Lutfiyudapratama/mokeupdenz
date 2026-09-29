@@ -27,37 +27,33 @@ export function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-secondary-light">
-        <div className="mx-auto max-w-7xl px-3 sm:px-4 h-14 sm:h-16 grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_auto_1fr] items-center gap-3">
+        <div className="mx-auto max-w-7xl px-3 sm:px-4 h-14 sm:h-16 grid grid-cols-[auto_1fr] sm:grid-cols-[auto_1fr_auto] items-center gap-3 sm:gap-6">
 
-          {/* Grup tengah: logo + search */}
-          <div className="flex items-center gap-2 sm:gap-6 sm:col-start-2">
+          {/* KIRI: Logo Denz (Paling Kiri) */}
+          <Link
+            href="/"
+            aria-label="Denz Auto Detailing - Beranda"
+            className="inline-flex items-center shrink-0"
+          >
+            <img
+              src="https://denzautodetailing.com/wp-content/uploads/2026/05/Main-Logo-Denz-Autodetailing-2026.png"
+              alt="Denz Auto Detailing"
+              className="h-7 sm:h-9 w-auto object-contain"
+            />
+          </Link>
 
-            <Link
-              href="/"
-              aria-label="Denz Auto Detailing - Beranda"
-              className="inline-flex items-center shrink-0"
-            >
-              <img
-                src="https://denzautodetailing.com/wp-content/uploads/2026/05/Main-Logo-Denz-Autodetailing-2026.png"
-                alt="Denz Auto Detailing"
-                className="h-7 sm:h-9 w-auto object-contain"
-              />
-            </Link>
-
-            <div className="hidden sm:flex items-center relative sm:w-72 lg:w-96">
-              <input
-                type="text"
-                placeholder="search products..."
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 pl-10 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-light transition-all"
-              />
-
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary" />
-            </div>
+          {/* TENGAH: Kotak Pencarian */}
+          <div className="hidden sm:flex items-center relative justify-self-center w-full max-w-2xl">
+            <input
+              type="text"
+              placeholder="search products..."
+              className="w-full rounded-xl border border-gray-200 px-4 py-2.5 pl-10 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-light transition-all"
+            />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary" />
           </div>
 
-          {/* Kanan: ikon */}
-          <div className="flex items-center gap-3 sm:gap-5 justify-self-end sm:col-start-3">
-
+          {/* KANAN: Ikon-ikon */}
+          <div className="flex items-center gap-3 sm:gap-5 justify-self-end">
             {/* Search mobile */}
             <Link
               href="/search"
@@ -74,9 +70,8 @@ export function Navbar() {
               className="relative p-1"
             >
               <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6 text-primary-dark" />
-
               <span className="absolute -top-1 -right-1 bg-secondary text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
-                0
+                2
               </span>
             </button>
 
