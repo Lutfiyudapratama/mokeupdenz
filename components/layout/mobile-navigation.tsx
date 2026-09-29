@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-const WHATSAPP_NUMBER = "6288802347761"
+const WHATSAPP_NUMBER = "6285322611528"
 const CART_COUNT = 0
 
 const items = [

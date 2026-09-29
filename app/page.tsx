@@ -7,15 +7,17 @@ import { TrustBanner } from "@/components/home/trust-banner"
 import { CategorySection } from "@/components/home/category-section"
 import { ProductHighlight } from "@/components/home/product-highlight"
 import { MobileNavigation } from "@/components/layout/mobile-navigation"
-// import { RunningText } from "@/components/home/running-text"
+import { FastMovingPopup } from "@/components/layout/fast-moving-popup"
 
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col pb-16 sm:pb-0 bg-white">
       <Navbar />
+      
+      {/* Komponen promo melayang */}
+      <FastMovingPopup />
 
       <main className="flex-1">
-        {/* <RunningText /> */}
         <HeroSection />
         <TrustBanner />
         <CategorySection />

@@ -1,21 +1,26 @@
 "use client"
 
-import Link from "next/link"
-import { ShoppingCart, User } from "lucide-react"
+// [NONAKTIF SEMENTARA]
+// import Link from "next/link"
+// import { ShoppingCart, User } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 import { LoginRequiredModal } from "@/components/auth/login-required-modal"
 import { RunningText } from "@/components/home/running-text"
-import { useAuthStore } from "@/store/auth-store"
+
+// [NONAKTIF SEMENTARA]
+// import { useAuthStore } from "@/store/auth-store"
 
 export function Navbar() {
   const router = useRouter()
 
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
+  // [NONAKTIF SEMENTARA]
+  // const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
 
   const [loginModalOpen, setLoginModalOpen] = useState(false)
 
+  /* [NONAKTIF SEMENTARA]
   function handleCartClick() {
     if (!isLoggedIn) {
       setLoginModalOpen(true)
@@ -24,6 +29,7 @@ export function Navbar() {
 
     router.push("/cart")
   }
+  */
 
   return (
     <>
@@ -32,15 +38,17 @@ export function Navbar() {
         <RunningText />
       </header>
 
-      {/*
-        Tombol bulat melayang (kanan bawah). Sengaja di luar <header>
-        agar `fixed` menempel ke layar.
+      {/* 
+        [NONAKTIF SEMENTARA]
+        Bagian tombol melayang (Profil & Keranjang) di bawah ini dijadikan komentar.
+        Hal ini dilakukan agar tidak terjadi penumpukan karena tombol yang sama
+        sudah dirender dan diatur posisinya oleh komponen MobileNavigation.
       */}
+      {/* 
       <div
         className="fixed right-4 sm:right-6 z-50 flex flex-col gap-3"
         style={{ bottom: "max(1rem, env(safe-area-inset-bottom))" }}
       >
-        {/* Profile */}
         <Link
           href="/profile"
           aria-label="Profil"
@@ -49,7 +57,6 @@ export function Navbar() {
           <User className="h-5 w-5 sm:h-6 sm:w-6" />
         </Link>
 
-        {/* Keranjang */}
         <button
           type="button"
           onClick={handleCartClick}
@@ -62,6 +69,7 @@ export function Navbar() {
           </span>
         </button>
       </div>
+      */}
 
       {/* Modal Login */}
       <LoginRequiredModal
