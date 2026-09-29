@@ -2,11 +2,11 @@
 
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
-import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav"
 import { HeroSection } from "@/components/home/hero-section"
 import { TrustBanner } from "@/components/home/trust-banner"
 import { CategorySection } from "@/components/home/category-section"
 import { ProductHighlight } from "@/components/home/product-highlight"
+import { MobileNavigation } from "@/components/layout/mobile-navigation"
 // import { RunningText } from "@/components/home/running-text"
 
 export default function HomePage() {
@@ -23,7 +23,7 @@ export default function HomePage() {
       </main>
 
       <Footer />
-      <MobileBottomNav />
+      <MobileNavigation />
     </div>
   )
 }

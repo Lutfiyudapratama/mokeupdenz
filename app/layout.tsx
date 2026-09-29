@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Manrope, Poppins } from "next/font/google"
 import "./globals.css"
+import { MobileNavigation } from "@/components/layout/mobile-navigation"
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -31,8 +32,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className={`${manrope.variable} ${poppins.variable}`}>
-      <body className="antialiased text-gray-900 font-sans">
+      <body>
         {children}
+
+       <MobileNavigation />
       </body>
     </html>
   )
