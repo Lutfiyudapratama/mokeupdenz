@@ -28,12 +28,6 @@ export function HeroSection() {
         <p className="font-display text-xs sm:text-sm md:text-base font-semibold text-gray-600 max-w-2xl mx-auto leading-[var(--hero-text-leading)] mb-[var(--hero-text-gap)]">
           Denz Auto Detailing hadir buat kamu yang pengen kendaraan selalu bersih, glossy, dan enak dilihat setiap hari. Mulai dari cuci, proteksi, sampai finishing. Semua bisa kamu lakuin sendiri dengan hasil yang tetap keliatan profesional. Dipakai harian oke, dipakai detailing juga masuk. Cocok buat kamu yang peduli tampilan kendaraan tanpa harus ribet.
         </p>
-
-        <p className="text-xs sm:text-sm font-bold text-primary mb-6 tracking-wide">
-          CEK KOLEKSI LENGKAPNYA SEKARANG DAN RASAIN SENDIRI HASILNYA
-        </p>
-
-        <MarketplaceBadges />
       </div>
     </section>
   )
