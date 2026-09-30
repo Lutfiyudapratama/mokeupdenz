@@ -1,21 +1,23 @@
 export interface ProductVariant {
   size: string
-  price: number     // harga normal (sebelum diskon)
-  discount?: number // persen, contoh: 20 = diskon 20%
+  price: number
+  discount?: number
 }
 
 export interface Product {
   id: string
   name: string
-  price: number     // harga normal dasar, dipakai kalau produk tanpa variants
-  discount?: number // persen, dipakai kalau produk tanpa variants
+  price: number
+  discount?: number
   image: string
+  images?: string[] // galeri foto tambahan, urutan sesuai tampil
   category: string
   categoryLabel: string
   stock: number
   rating?: number
   sold?: number
   description?: string
+  highlights?: string[] // poin-poin singkat (opsional)
   variants?: ProductVariant[]
 }
 
@@ -29,7 +31,7 @@ export interface CartItem {
   productId: string
   name: string
   image: string
-  price: number // harga akhir per item (setelah diskon)
+  price: number
   size: string
   qty: number
 }

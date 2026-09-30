@@ -7,6 +7,7 @@ import { Product } from "@/types"
 import { formatPrice } from "@/lib/utils/format"
 import { getFinalPrice } from "@/lib/utils/product"
 import { useCartStore } from "@/store/cart-store"
+import { useAuthStore } from "@/store/auth-store"
 import { cn } from "@/lib/utils"
 import { PriceDisplay, DiscountBadge } from "./price-display"
 
@@ -29,6 +30,7 @@ export function ProductQuickAddModal({
   const [shouldRender, setShouldRender] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
   const addItem = useCartStore((state) => state.addItem)
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
   const router = useRouter()
 
   useEffect(() => {
@@ -59,20 +61,31 @@ export function ProductQuickAddModal({
   const maxQty = product.stock
   const selectedVariant = variants.find((v) => v.size === selectedSize)
 
-  // Harga normal + diskon dari ukuran terpilih (atau dari produk kalau tanpa variants)
+  // Harga normal + diskon dari ukuran terpilih. Diskon hanya berlaku kalau sudah login.
   const base = selectedVariant
-    ? { price: selectedVariant.price, discount: selectedVariant.discount ?? 0 }
+    ? {
+        price: selectedVariant.price,
+        discount: isLoggedIn ? selectedVariant.discount ?? 0 : 0,
+      }
     : variants.length === 0
-    ? { price: product.price, discount: product.discount ?? 0 }
+    ? {
+        price: product.price,
+        discount: isLoggedIn ? product.discount ?? 0 : 0,
+      }
     : null
 
-  const unitPrice = base ? getFinalPrice(base.price, base.discount) : null
-  const savings = base && unitPrice !== null ? (base.price - unitPrice) * qty : 0
+  const unitPrice = base
+    ? getFinalPrice(base.price, base.discount, isLoggedIn)
+    : null
+  const savings =
+    base && unitPrice !== null ? (base.price - unitPrice) * qty : 0
   const isDisabled = unitPrice === null
 
-  // True kalau produk punya diskon di salah satu ukuran (untuk menyisakan ruang tetap)
+  // Baris "Kamu hemat" hanya relevan untuk pengguna yang login
   const hasAnyDiscount =
-    (product.discount ?? 0) > 0 || variants.some((v) => (v.discount ?? 0) > 0)
+    isLoggedIn &&
+    ((product.discount ?? 0) > 0 ||
+      variants.some((v) => (v.discount ?? 0) > 0))
 
   function handleConfirm() {
     if (!product || unitPrice === null) return
@@ -130,7 +143,6 @@ export function ProductQuickAddModal({
           <X className="h-4 w-4" />
         </button>
 
-        {/* Header: gambar + nama + harga */}
         <div className="flex gap-3 p-4 sm:p-5 border-b border-primary-light">
           <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-lg overflow-hidden bg-primary-light shrink-0">
             <img
@@ -146,7 +158,6 @@ export function ProductQuickAddModal({
             <p className="text-sm sm:text-base font-bold text-primary-dark leading-snug line-clamp-2">
               {product.name}
             </p>
-            {/* min-h: tinggi tetap, tidak berubah saat harga coret muncul */}
             <div className="mt-1 min-h-[3rem]">
               <PriceDisplay
                 product={product}
@@ -166,7 +177,8 @@ export function ProductQuickAddModal({
               <div className="flex flex-wrap gap-2">
                 {variants.map((v) => {
                   const active = selectedSize === v.size
-                  const discount = v.discount ?? 0
+                  // Diskon per ukuran hanya ditampilkan kalau sudah login
+                  const discount = isLoggedIn ? v.discount ?? 0 : 0
                   return (
                     <button
                       key={v.size}
@@ -188,7 +200,9 @@ export function ProductQuickAddModal({
                           active ? "text-white" : "text-primary"
                         )}
                       >
-                        {formatPrice(getFinalPrice(v.price, discount))}
+                        {formatPrice(
+                          getFinalPrice(v.price, discount, isLoggedIn)
+                        )}
                       </span>
                       {discount > 0 && (
                         <span
@@ -243,7 +257,6 @@ export function ProductQuickAddModal({
             </div>
           </div>
 
-          {/* Ringkasan */}
           <div className="pt-3 border-t border-primary-light space-y-1.5">
             {hasAnyDiscount && (
               <div
@@ -303,7 +316,6 @@ export function ProductQuickAddModal({
             )}
           </button>
 
-          {/* Selalu memakan tempat, hanya disembunyikan (invisible) setelah ukuran dipilih */}
           <p
             className={cn(
               "text-center text-[11px] sm:text-xs text-red-500 mt-2",
