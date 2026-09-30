@@ -1,16 +1,27 @@
 import { Product } from "@/types"
 
-export function getFinalPrice(price: number, discount = 0) {
+/**
+ * Kalau applyDiscount = false (tamu), harga diskon diabaikan
+ * dan yang dikembalikan adalah harga asli.
+ */
+export function getFinalPrice(
+  price: number,
+  discount = 0,
+  applyDiscount = true
+) {
+  if (!applyDiscount) return price
   return Math.round(price * (1 - discount / 100))
 }
 
-export function getPriceInfo(product: Product) {
+export function getPriceInfo(product: Product, applyDiscount = true) {
   const items = product.variants?.length
     ? product.variants
     : [{ price: product.price, discount: product.discount }]
 
-  const finals = items.map((i) => getFinalPrice(i.price, i.discount))
-  const discounts = items.map((i) => i.discount ?? 0)
+  const finals = items.map((i) =>
+    getFinalPrice(i.price, i.discount, applyDiscount)
+  )
+  const discounts = applyDiscount ? items.map((i) => i.discount ?? 0) : [0]
 
   return {
     min: Math.min(...finals),

@@ -1,7 +1,10 @@
+"use client"
+
 import { Product } from "@/types"
 import { formatPrice } from "@/lib/utils/format"
 import { getFinalPrice, getPriceInfo } from "@/lib/utils/product"
 import { cn } from "@/lib/utils"
+import { useAuthStore } from "@/store/auth-store"
 
 export function DiscountBadge({
   percent,
@@ -38,19 +41,22 @@ export function PriceDisplay({
   selectedSize,
   className,
 }: PriceDisplayProps) {
+  // Diskon hanya berlaku untuk pengguna yang sudah login
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn)
+
   const variant = selectedSize
     ? product.variants?.find((v) => v.size === selectedSize)
     : undefined
 
-  // Ukuran dipilih: harga pasti + harga coret + badge persen
+  // Ukuran dipilih: harga pasti, harga coret + badge hanya kalau login
   if (variant) {
-    const discount = variant.discount ?? 0
+    const discount = isLoggedIn ? variant.discount ?? 0 : 0
     return (
       <div>
         <p className={className}>
-          {formatPrice(getFinalPrice(variant.price, discount))}
+          {formatPrice(getFinalPrice(variant.price, discount, isLoggedIn))}
         </p>
-        {discount > 0 && (
+        {isLoggedIn && discount > 0 && (
           <p className="mt-0.5 flex items-center gap-1.5">
             <span className="text-xs text-gray-400 line-through">
               {formatPrice(variant.price)}
@@ -62,8 +68,8 @@ export function PriceDisplay({
     )
   }
 
-  // Belum dipilih: rentang harga akhir (termurah - termahal)
-  const { min, max } = getPriceInfo(product)
+  // Belum dipilih: rentang harga (asli untuk tamu, setelah diskon untuk yang login)
+  const { min, max } = getPriceInfo(product, isLoggedIn)
 
   return (
     <p className={cn("flex flex-wrap items-baseline gap-x-1.5", className)}>

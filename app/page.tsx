@@ -1,5 +1,3 @@
-"use client"
-
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav"
@@ -7,7 +5,8 @@ import { HeroSection } from "@/components/home/hero-section"
 import { TrustBanner } from "@/components/home/trust-banner"
 import { CategorySection } from "@/components/home/category-section"
 import { ProductHighlight } from "@/components/home/product-highlight"
-// import { RunningText } from "@/components/home/running-text"
+import { FloatingActions } from "@/components/layout/floating-actions"
+import { FastMovingPopup } from "@/components/layout/fast-moving-popup"
 
 export default function HomePage() {
   return (
@@ -15,15 +14,16 @@ export default function HomePage() {
       <Navbar />
 
       <main className="flex-1">
-        {/* <RunningText /> */}
         <HeroSection />
         <TrustBanner />
         <CategorySection />
         <ProductHighlight />
+        <FastMovingPopup />
       </main>
 
       <Footer />
       <MobileBottomNav />
+      <FloatingActions />
     </div>
   )
 }
