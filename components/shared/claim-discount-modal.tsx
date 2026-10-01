@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { X, Gift, Copy, Check } from "lucide-react"
+import { X, Gift, Copy, Check, Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useDiscountStore } from "@/store/discount-store"
 
 interface ClaimDiscountModalProps {
     open: boolean
@@ -18,11 +19,13 @@ export function ClaimDiscountModal({
     onClose,
 }: ClaimDiscountModalProps) {
     const [claimed, setClaimed] = useState(false)
+    const claim = useDiscountStore((s) => s.claim)
 
     if (!open) return null
 
     function handleClaim() {
         navigator.clipboard?.writeText(DISCOUNT_CODE).catch(() => { })
+        claim() // mencatat waktu klaim, voucher aktif 1 jam sejak sekarang
         setClaimed(true)
         setTimeout(() => {
             onClose()
@@ -85,6 +88,11 @@ export function ClaimDiscountModal({
                             </p>
                         </div>
                         <span className="text-lg font-black text-secondary">20%</span>
+                    </div>
+
+                    <div className="flex items-center justify-center gap-1.5 text-[11px] sm:text-xs text-red-500 font-bold">
+                        <Clock className="h-3.5 w-3.5" />
+                        Berlaku 1 jam setelah diklaim
                     </div>
 
                     <p className="text-center text-[11px] sm:text-xs text-gray-400">

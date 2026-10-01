@@ -7,6 +7,7 @@ import { Star, ShoppingCart, Zap } from "lucide-react"
 import { Product } from "@/types"
 import { getPriceInfo } from "@/lib/utils/product"
 import { PriceDisplay, DiscountBadge } from "./price-display"
+import { DiscountTimerBadge } from "./discount-timer-badge"
 import { ProductQuickAddModal } from "./product-quick-add-modal"
 
 import { useAuthFlowStore } from "@/store/auth-flow-store"
@@ -51,6 +52,14 @@ export function ProductCard({ product }: { product: Product }) {
               prefix="Hemat hingga"
               className="absolute right-2 top-2 shadow-sm"
             />
+
+            {/* Hitung mundur voucher, hanya untuk yang sudah login & masih aktif */}
+            {isLoggedIn && (
+              <DiscountTimerBadge
+                size="sm"
+                className="absolute left-2 bottom-2 shadow-sm"
+              />
+            )}
           </div>
         </Link>
 

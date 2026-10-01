@@ -10,6 +10,7 @@ import { useCartStore } from "@/store/cart-store"
 import { useAuthStore } from "@/store/auth-store"
 import { cn } from "@/lib/utils"
 import { PriceDisplay, DiscountBadge } from "./price-display"
+import { DiscountTimerBadge } from "./discount-timer-badge"
 
 interface ProductQuickAddModalProps {
   product: Product | null
@@ -285,6 +286,10 @@ export function ProductQuickAddModal({
         </div>
 
         <div className="p-4 sm:p-5 pt-0">
+          {isLoggedIn && (
+            <DiscountTimerBadge size="md" className="w-full justify-center mb-3" />
+          )}
+
           <button
             type="button"
             onClick={handleConfirm}

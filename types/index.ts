@@ -34,4 +34,5 @@ export interface CartItem {
   price: number
   size: string
   qty: number
+  selected: boolean
 }
